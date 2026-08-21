@@ -16,8 +16,8 @@ Everything — API, database, Whisper, Ollama — runs on the same laptop, no ex
 
 ## Tech stack
 
-| Backend | Flask, SQLite, faster-whisper, Ollama (llava, llama3.2), ReportLab, openpyxl |
-| Frontend | Flutter, Provider, go_router, Dio, image_picker, google_mlkit_text_recognition, speech_to_text, record |
+| Backend : Flask, SQLite, faster-whisper, Ollama (llava, llama3.2), ReportLab, openpyxl |
+| Frontend : Flutter, Provider, go_router, Dio, image_picker, google_mlkit_text_recognition, speech_to_text, record |
 
 ## Getting started
 
