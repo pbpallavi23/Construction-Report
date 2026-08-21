@@ -64,20 +64,6 @@ By default the app points at `http://localhost:8000`. To point it at a different
 flutter run --dart-define=API_BASE_URL=http://your-host:8000
 ```
 
-### 3. Install the Android app directly
-
-If you just want the app on a physical device without building from source, a debug APK is included at:
-
-```
-frontend/build/app/outputs/flutter-apk/app-debug.apk
-```
-
-Sideload it onto an Android device (enable "install from unknown sources" first), or install via ADB:
-
-```bash
-adb install frontend/build/app/outputs/flutter-apk/app-debug.apk
-```
-
 ## Project structure
 
 ```
