@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Baxall Admin — {% block title %}Dashboard{% endblock %}</title>
+  <style>
+    :root { --brand:#0b5394; --bg:#f5f7f9; --line:#e0e5ea; --ok:#1a7f37; --err:#b42318; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"Segoe UI",Arial,sans-serif; color:#1a1a1a; background:var(--bg); }
+    header { background:var(--brand); color:#fff; padding:14px 24px; display:flex; align-items:center; gap:24px; }
+    header h1 { font-size:18px; margin:0; }
+    nav a { color:#fff; text-decoration:none; margin-right:18px; opacity:.85; font-size:14px; }
+    nav a:hover, nav a.active { opacity:1; text-decoration:underline; }
+    main { max-width:960px; margin:24px auto; padding:0 16px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:20px; }
+    h2 { color:var(--brand); margin-top:0; font-size:16px; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); }
+    th { color:#555; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+    input, select { width:100%; padding:9px 10px; border:1px solid var(--line); border-radius:6px; font-size:14px; }
+    label { display:block; font-size:12px; color:#555; margin:0 0 4px; }
+    .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    .grid .full { grid-column:1 / -1; }
+    button { background:var(--brand); color:#fff; border:0; padding:10px 18px; border-radius:6px; font-size:14px; cursor:pointer; }
+    button.danger { background:transparent; color:var(--err); padding:4px 8px; font-size:13px; }
+    .flash { padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:14px; }
+    .flash.success { background:#e7f6ec; color:var(--ok); border:1px solid #b7e3c3; }
+    .flash.error { background:#fdecea; color:var(--err); border:1px solid #f3c1bc; }
+    .muted { color:#888; font-size:13px; }
+    code { background:#eef2f5; padding:1px 5px; border-radius:4px; font-size:12px; }
+    .stat { display:inline-block; margin-right:28px; }
+    .stat b { display:block; font-size:28px; color:var(--brand); }
+    .badge { display:inline-block; padding:2px 9px; border-radius:99px; font-size:12px; font-weight:600; }
+    .badge.draft { background:#fdf3d8; color:#8a6100; }
+    .badge.submitted { background:#e2ecfb; color:#0b5394; }
+    .badge.signed_off { background:#e7f6ec; color:var(--ok); }
+    .badge.blank { background:#fdecea; color:var(--err); }
+    .field-list { display:grid; grid-template-columns:1fr 2fr; gap:0; font-size:14px; }
+    .field-list dt { color:#555; padding:8px 10px; border-bottom:1px solid var(--line); font-weight:600; }
+    .field-list dd { margin:0; padding:8px 10px; border-bottom:1px solid var(--line); }
+    .field-list dd.empty { color:#b42318; font-style:italic; }
+    .back-link { display:inline-block; margin-bottom:14px; font-size:14px; color:var(--brand); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Baxall Admin</h1>
+    <nav>
+      <a href="{{ url_for('admin.home') }}" class="{{ 'active' if active=='home' }}">Overview</a>
+      <a href="{{ url_for('admin.users') }}" class="{{ 'active' if active=='users' }}">Users</a>
+      <a href="{{ url_for('admin.sites') }}" class="{{ 'active' if active=='sites' }}">Sites</a>
+      <a href="{{ url_for('admin.reports') }}" class="{{ 'active' if active=='reports' }}">Reports</a>
+      <a href="{{ url_for('admin.media') }}" class="{{ 'active' if active=='media' }}">Media</a>
+    </nav>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

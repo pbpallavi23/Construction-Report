@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% set active = 'media' %}
+{% block title %}Media{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Voice notes ({{ voice_notes|length }})</h2>
+  {% if voice_notes %}
+  <table>
+    <thead><tr><th>ID</th><th>Site</th><th>Transcript</th><th>File</th><th>Created</th></tr></thead>
+    <tbody>
+    {% for v in voice_notes %}
+      <tr>
+        <td><code>{{ v.id }}</code></td>
+        <td><code>{{ v.site_id }}</code></td>
+        <td>{{ v.transcript or '—' }}</td>
+        <td>{% if v.file_path %}<a href="/uploads/{{ v.file_path }}">{{ v.file_path }}</a>{% else %}—{% endif %}</td>
+        <td class="muted">{{ v.created_at or '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No voice notes yet. They are created dynamically from the app / API — none are preloaded.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>Pictures ({{ pictures|length }})</h2>
+  {% if pictures %}
+  <table>
+    <thead><tr><th>ID</th><th>Site</th><th>Caption</th><th>File</th><th>Created</th></tr></thead>
+    <tbody>
+    {% for p in pictures %}
+      <tr>
+        <td><code>{{ p.id }}</code></td>
+        <td><code>{{ p.site_id }}</code></td>
+        <td>{{ p.caption or '—' }}</td>
+        <td>{% if p.file_path %}<a href="/uploads/{{ p.file_path }}">{{ p.file_path }}</a>{% else %}—{% endif %}</td>
+        <td class="muted">{{ p.created_at or '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No pictures yet. They are created dynamically from the app / API — none are preloaded.</p>
+  {% endif %}
+</div>
+{% endblock %}

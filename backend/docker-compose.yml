@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      APP_ENV: docker
+      DEBUG: "true"
+      PERSISTENCE_BACKEND: sqlite
+      DATABASE_PATH: /data/baxall.db
+      # Pictures/voice notes are written here at runtime. Without this,
+      # they land in the container's own writable layer and vanish on
+      # every `docker-compose up --build` (the DB record survives because
+      # /data is a real volume, but the file it points to doesn't).
+      UPLOAD_DIR: /data/uploads
+      CORS_ORIGINS: "*"
+      # Ollama runs on the Windows host, not inside this container, so
+      # "localhost" here would point at the container itself and always
+      # fail the ollama_available() check. host.docker.internal is Docker
+      # Desktop's special DNS name for reaching the host machine.
+      OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+    ports:
+      - "8000:8000"
+    volumes:
+      - baxall_data:/data
+
+volumes:
+  baxall_data:

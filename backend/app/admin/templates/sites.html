@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% set active = 'sites' %}
+{% block title %}Sites{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Add site</h2>
+  <form method="post" action="{{ url_for('admin.create_site') }}">
+    <div class="grid">
+      <div><label>Site name *</label><input name="site_name" required></div>
+      <div><label>Address *</label><input name="address" required></div>
+      <div><label>Site code</label><input name="site_code" placeholder="optional"></div>
+      <div>
+        <label>Status</label>
+        <select name="status">
+          <option value="active">active</option>
+          <option value="on_hold">on_hold</option>
+          <option value="planning">planning</option>
+          <option value="completed">completed</option>
+        </select>
+      </div>
+      <div><label>Phase</label><input name="phase" placeholder="optional"></div>
+      <div>
+        <label>Assign to user</label>
+        <select name="assigned_assistant_id">
+          <option value="">— Unassigned —</option>
+          {% for u in users %}
+            <option value="{{ u.assistant_id }}">{{ u.full_name }} ({{ u.email }})</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <p><button type="submit">Create site</button></p>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Sites ({{ sites|length }})</h2>
+  {% if sites %}
+  <table>
+    <thead><tr><th>Site ID</th><th>Name</th><th>Address</th><th>Status</th><th>Assigned user</th><th></th></tr></thead>
+    <tbody>
+    {% for s in sites %}
+      <tr>
+        <td><code>{{ s.site_id }}</code></td>
+        <td>{{ s.site_name }}</td>
+        <td>{{ s.address }}</td>
+        <td>{{ s.status or '—' }}</td>
+        <td>{{ s.assigned_assistant_id or '—' }}</td>
+        <td>
+          <form method="post" action="{{ url_for('admin.delete_site', site_id=s.site_id) }}"
+                onsubmit="return confirm('Delete this site?');">
+            <button class="danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No sites yet. Create one above — records are stored in the database, none are preloaded.</p>
+  {% endif %}
+</div>
+{% endblock %}

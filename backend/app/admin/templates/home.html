@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block title %}Overview{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Overview</h2>
+  <div class="stat"><b>{{ user_count }}</b> Users</div>
+  <div class="stat"><b>{{ site_count }}</b> Sites</div>
+  <div class="stat"><b>{{ report_count }}</b> Reports</div>
+  <div class="stat"><b>{{ voice_count }}</b> Voice notes</div>
+  <div class="stat"><b>{{ picture_count }}</b> Pictures</div>
+  <p class="muted" style="margin-top:18px">
+    All records are created dynamically and stored in the database. Nothing is
+    preloaded — these counts start at 0 on a fresh database.
+  </p>
+</div>
+<div class="card">
+  <h2>Manage</h2>
+  <p><a href="{{ url_for('admin.users') }}">→ Add &amp; manage users</a></p>
+  <p><a href="{{ url_for('admin.sites') }}">→ Add &amp; manage sites</a></p>
+  <p><a href="{{ url_for('admin.reports') }}">→ View incident reports</a></p>
+  <p><a href="{{ url_for('admin.media') }}">→ View pictures &amp; voice notes</a></p>
+</div>
+{% endblock %}

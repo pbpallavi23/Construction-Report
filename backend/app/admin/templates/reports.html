@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% set active = 'reports' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h2>Incident reports ({{ incident_reports|length }})</h2>
+  <p class="muted" style="margin-top:-8px">
+    Generated from a site's saved pictures and voice notes by the local AI
+    model; any field it couldn't determine is saved blank until the user
+    fills it in and approves the report.
+  </p>
+  {% if incident_reports %}
+  <table>
+    <thead><tr><th>ID</th><th>Site</th><th>Date</th><th>Status</th><th>Description</th><th>Approved by</th><th>Created</th><th colspan="4"></th></tr></thead>
+    <tbody>
+    {% for r in incident_reports %}
+      <tr>
+        <td><code>{{ r.id }}</code></td>
+        <td>{{ sites_by_id.get(r.site_id, r.site_id) }}</td>
+        <td>{{ r.report_date or '—' }}</td>
+        <td><span class="badge {{ r.status }}">{{ r.status }}</span></td>
+        <td>{{ (r.fields.description or '—')|truncate(60) }}</td>
+        <td>{{ r.approved_by or '—' }}</td>
+        <td class="muted">{{ r.created_at or '—' }}</td>
+        <td><a href="{{ url_for('admin.incident_report_detail', report_id=r.id) }}">View</a></td>
+        <td><a href="{{ url_for('admin.incident_report_pdf', report_id=r.id) }}" target="_blank">PDF</a></td>
+        <td><a href="{{ url_for('admin.export_incident_report', report_id=r.id) }}">.xlsx</a></td>
+        <td>
+          <form method="post" action="{{ url_for('admin.delete_incident_report', report_id=r.id) }}"
+                onsubmit="return confirm('Delete this incident report? This cannot be undone.');">
+            <button class="danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No incident reports yet. They're created from the app (AI draft → user review → approve) or the API — none are preloaded.</p>
+  {% endif %}
+</div>
+{% endblock %}

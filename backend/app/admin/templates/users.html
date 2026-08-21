@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% set active = 'users' %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Add user</h2>
+  <form method="post" action="{{ url_for('admin.create_user') }}">
+    <div class="grid">
+      <div><label>Full name *</label><input name="full_name" required></div>
+      <div><label>Email *</label><input name="email" type="email" required></div>
+      <div><label>Password *</label><input name="password" type="text" required></div>
+      <div><label>Role</label><input name="role" placeholder="e.g. Site Manager"></div>
+      <div class="full"><label>Phone</label><input name="phone" placeholder="optional"></div>
+    </div>
+    <p><button type="submit">Create user</button></p>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Users ({{ users|length }})</h2>
+  {% if users %}
+  <table>
+    <thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Role</th><th></th></tr></thead>
+    <tbody>
+    {% for u in users %}
+      <tr>
+        <td><code>{{ u.assistant_id }}</code></td>
+        <td>{{ u.full_name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role or '—' }}</td>
+        <td>
+          <form method="post" action="{{ url_for('admin.delete_user', assistant_id=u.assistant_id) }}"
+                onsubmit="return confirm('Delete this user?');">
+            <button class="danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No users yet. Create one above — records are stored in the database, none are preloaded.</p>
+  {% endif %}
+</div>
+{% endblock %}
